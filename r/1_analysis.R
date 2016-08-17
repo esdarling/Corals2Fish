@@ -16,6 +16,8 @@ unique(dat$Country)
 unique(dat$Habitat)
 unique(dat$Management)
 
+table(dat$Management)
+
 hist(dat$Depth_m)
 min(dat$Depth_m); max(dat$Depth_m)
 
@@ -28,6 +30,7 @@ source("HighstatLib.R")
 
 
 ##LIFE HISTORY
+head(dat)
 #two sets of analyses: coral cover / life histories 
 Z5 <- dat[,c("Competitive","StressTolerant","Generalist","Weedy")]
 corvif(Z5) 
@@ -38,17 +41,24 @@ corvif(Z5b)
 #VIFS if coral cover and life histories included in model
 Zall <- dat[,c("Complexity","no_genera","Rao",
                "total_cover",
-               "CWMBranching","CWMMaxsize","CWMBrooding","CWMFecundity",
+               "CWMBranching","CWMMaxsize","CWMBrooding","CWMFecundity","CWMGrowthrate",
                "Competitive","StressTolerant","Generalist","Weedy")]  
 head(Zall)
 corvif(Zall)    
 
 #Final set for life history models
-Zall <- dat[,c("Complexity","no_genera","Rao",
-               "CWMBranching","CWMMaxsize","CWMBrooding","CWMFecundity",
+Zfinal <- dat[,c("Complexity","no_genera","Rao",
+               "CWMBranching","CWMMaxsize","CWMBrooding","CWMFecundity","CWMGrowthrate",
                "Competitive","StressTolerant","Generalist","Weedy")]  
-head(Zall)
-corvif(Zall)        
+head(Zfinal)
+corvif(Zfinal)       
+
+#Final set for life history models
+Zcover <- dat[,c("Complexity","no_genera","Rao",
+                 "CWMBranching","CWMMaxsize","CWMBrooding","CWMFecundity","CWMGrowthrate",
+                 "total_cover")]  
+head(Zcover)
+corvif(Zcover)       
 
 
 # Fish results plots
