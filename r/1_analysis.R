@@ -23,6 +23,49 @@ min(dat$Depth_m); max(dat$Depth_m)
 
 with(dat, table(Country, Habitat))
 
+#plot coral cover to structural complexity
+names(dat)
+head(dat)
+
+dat.ggplot <- dat %>% 
+  select(Complexity, Latitude,StressTolerant,Competitive,no_genera,Generalist,
+         CWMMaxsize,Weedy,CWMBrooding,Depth_m,CWMFecundity,CWMBranching,total_cover) %>% 
+  melt(id.vars = "Complexity")
+
+dat.ggplot$variable <- recode(dat.ggplot$variable, 
+                              "'total_cover' = 'Total cover';
+                              'no_genera' = 'Genera richness';
+                              'CWMMaxsize' = 'Colony size';
+                              'CWMBrooding' ='Brooding';
+                              'CWMFecundity' = 'Fecundity';
+                              'CWMBranching' = 'Branching';
+                              'Depth_m' = 'Depth'")
+
+head(dat.ggplot)
+levels(as.factor(dat.ggplot$variable))
+
+dat.ggplot$variable <- factor(dat.ggplot$variable, levels = c("Latitude","StressTolerant","Competitive","Genera richness","Generalist",
+                                                              "Colony size","Weedy","Brooding","Depth","Fecundity","Branching","Total cover"))
+
+## FIG 2
+ggplot(data = dat.ggplot, aes(x = value, y = Complexity)) + 
+  geom_point(shape = 21, alpha = 0.5) +
+  facet_wrap(~variable, scales = "free", ncol = 3) + 
+  stat_smooth(method = "loess", colour = "red", se = TRUE) +
+  stat_smooth(method = "lm", colour = "blue", se = TRUE) + 
+  theme_bw(base_size = 12) + 
+  theme(panel.grid.minor=element_blank(), 
+        panel.grid.major=element_blank()) + 
+  scale_x_continuous(expand = c(0.025,0.025)) + 
+  scale_y_continuous(breaks = c(1,2,3,4), limits = c(0,4.5)) + 
+  xlab("Value") + 
+  ylab("Structural complexity")
+
+getwd()
+setwd("/Users/emilydarling/Documents/Work/GitHub/esdarling/Corals2Fish/plots")   
+ggsave("complex multiplot_withdummy.pdf", height = 6.225, width = 6.5)
+
+
 
 #consider VIFs 
 setwd("/Users/emilydarling/Documents/Work/GitHub/Corals2Fish")  

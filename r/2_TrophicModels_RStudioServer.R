@@ -50,6 +50,7 @@ ggsave("trophic group histograms.pdf", width = 6, height = 4)
 # =====================================
 # = Standardize predictors for MuMIn  =
 # =====================================
+library(arm)
 ?rescale
 #Standardizing Regression Predictors by Centering and Dividing by 2 SD (package: arm)
 dat$Depth_m.rescale <- rescale(dat$Depth_m, "full")
